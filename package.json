@@ -1,0 +1,12 @@
+{
+  "name": "watsi-see",
+  "version": "0.0.0",
+  "description": "Visualize data from Watsi Google Doc",
+  "main": "index.js",
+  "author": "Mehul Kar",
+  "license": "MIT",
+  "dependencies": {
+    "google-spreadsheets": "^0.3.0",
+    "express": "^4.4.1"
+  }
+}
