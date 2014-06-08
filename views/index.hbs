@@ -1,1 +1,22 @@
-The home page
+<h1>Data</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Posted</th>
+      <th>Funded</th>
+      <th>Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each items}}
+      <tr>
+        <td>{{this.id}}</td>
+        <td>{{this.posted}}</td>
+        <td>{{this.funded}}</td>
+        <td>{{this.cost}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
