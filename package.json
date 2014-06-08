@@ -12,6 +12,7 @@
     "cookie-parser": "~1.0.1",
     "body-parser": "~1.0.0",
     "debug": "~0.7.4",
-    "express3-handlebars": "*"
+    "express3-handlebars": "*",
+    "jsonfile": "^1.1.1"
   }
 }
