@@ -3,6 +3,15 @@
 <head>
   <title>Watsi See</title>
   <style type="text/css" src="/stylesheets/style.css"></style>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript">
+    function refreshData() {
+      console.log('refreshing...')
+      $.post('/refresh', function() {
+        console.log('done!')
+      });
+    }
+  </script>
 </head>
 <body>
   <h1>Watsi See</h1>

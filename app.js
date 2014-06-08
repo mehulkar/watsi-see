@@ -14,11 +14,17 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', function(req, res) {
+app.get('/', function(req, res) {
   watsi.readDoc(function(items) {
     res.render('index', {items: items})
   });
 });
+
+app.post('/refresh', function(req, res) {
+  watsi.refreshData(function() {
+    res.send('done');
+  })
+})
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
