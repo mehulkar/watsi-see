@@ -17,24 +17,10 @@
   </script>
 
   <script type="text/javascript">
-    // gives us objects with daysToFund and cost.
-    // TODO do something cool with this.
-    function makeCool() {
-      var days = d3.selectAll('.days')[0];
-      var objects = days.map(function(day) {
-        day = $(day);
-
-        var obj = {};
-        obj.days = day.text();
-        obj.cost = parseFloat(day.parent().children('.cost').text().slice(1).replace(/,/g,""));
-        return obj;
-      });
-
-      window.myObjects = objects;
-    }
-
     $(document).ready(function() {
-      makeCool();
+      $.get('/data', function(data) {
+        window.myObjects = data;
+      })
     })
   </script>
 </head>

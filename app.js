@@ -25,6 +25,12 @@ app.get('/', function(req, res) {
   });
 });
 
+app.get('/data', function(req, res) {
+    watsi.readDoc(function(err, data) {
+        res.send(data)
+    })
+})
+
 app.post('/refresh', function(req, res) {
   watsi.refreshData(function() {
     res.send('done');
