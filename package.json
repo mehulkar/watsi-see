@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Mehul Kar",
   "license": "MIT",
+  "scripts" : {
+    "start": "node index.js"
+  },
   "dependencies": {
     "google-spreadsheets": "^0.3.0",
     "express": "^4.4.1"
