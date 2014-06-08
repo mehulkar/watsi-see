@@ -2,33 +2,39 @@
 
 var GS = require('google-spreadsheets');
 
-GS({key: '1Omhoi2Fl7E5aqxb7p9AIh7aXcYy_3A7YfYWXFqFEUZg'}, function(err, spreadsheet) {
-  var patients = spreadsheet.worksheets[0];
+function readDoc(callback) {
 
-  patients.cells(null, function(err, rows) {
-    var rowObjects = rows.cells;
+  GS({key: '1Omhoi2Fl7E5aqxb7p9AIh7aXcYy_3A7YfYWXFqFEUZg'}, function(err, spreadsheet) {
+    var patients = spreadsheet.worksheets[0];
 
-    var rowsArray = [];
+    patients.cells(null, function(err, rows) {
+      var rowObjects = rows.cells;
 
-    for (var key in rowObjects) {
-     rowsArray.push(rowObjects[key]);
-    }
+      var rowsArray = [];
 
-    var header = rowsArray.shift(); // mutates the array!!
+      for (var key in rowObjects) {
+       rowsArray.push(rowObjects[key]);
+      }
 
-    // get relevant columns from posts
-    var newDataArray = rowsArray.map(function(row) {
-      var newObj = {};
+      var header = rowsArray.shift(); // mutates the array!!
 
-      if (row['2'] && row['2'].value) { newObj.id     = row['2'].value; }
-      if (row['6'] && row['6'].value) { newObj.cost   = row['6'].value; }
-      if (row['7'] && row['7'].value) { newObj.posted = row['7'].value; }
-      if (row['8'] && row['8'].value) { newObj.funded = row['8'].value; }
+      // get relevant columns from posts
+      var newDataArray = rowsArray.map(function(row) {
+        var newObj = {};
 
-      return newObj;
+        if (row['2'] && row['2'].value) { newObj.id     = row['2'].value; }
+        if (row['6'] && row['6'].value) { newObj.cost   = row['6'].value; }
+        if (row['7'] && row['7'].value) { newObj.posted = row['7'].value; }
+        if (row['8'] && row['8'].value) { newObj.funded = row['8'].value; }
+
+        return newObj;
+      });
+
+
+      callback(newDataArray);
     });
-
-
-    console.log(newDataArray);
   });
-});
+}
+
+module.exports = {};
+module.exports.readDoc = readDoc;
