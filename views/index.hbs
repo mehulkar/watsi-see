@@ -1,23 +1,24 @@
-<h1>Data</h1>
-<button onClick="refreshData()">Refresh Data</button>
-<h2>Last Updated: {{timestamp}}</h2>
+<section>
+  <button onClick="refreshData()">Refresh Data</button>
+  <p class='small'>Last Updated: {{timestamp}}</p>
+</section>
 
-<table>
+<table border='1' cellspacing="0" cellpadding="5">
   <thead>
     <tr>
-      <th>ID</th>
       <th>Posted</th>
       <th>Funded</th>
       <th>Cost</th>
+      <th>Days</th>
     </tr>
   </thead>
   <tbody>
     {{#each items}}
-      <tr>
-        <td>{{this.id}}</td>
-        <td>{{this.posted}}</td>
-        <td>{{this.funded}}</td>
-        <td>{{this.cost}}</td>
+      <tr id="patient-{{this.id}}">
+        <td class='posted'>{{this.posted}}</td>
+        <td class='funded'>{{this.funded}}</td>
+        <td class='cost'>{{this.cost}}</td>
+        <td class='days'>{{this.daysToFund}}</td>
       </tr>
     {{/each}}
   </tbody>
