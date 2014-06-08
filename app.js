@@ -3,6 +3,7 @@ var path        = require('path');
 var logger      = require('morgan');
 var expressHbs  = require('express3-handlebars');
 var watsi       = require('./lib/watsi');
+var async       = require('async');
 
 var app = express();
 
@@ -15,8 +16,12 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
-  watsi.readDoc(function(items) {
-    res.render('index', {items: items})
+  async.parallel([watsi.readDoc, watsi.readTimeStamp], function(err, results){
+    var items = results[0],
+        timestamp = results[1],
+        data = { items: items, timestamp: timestamp }
+
+    res.render('index', data)
   });
 });
 
