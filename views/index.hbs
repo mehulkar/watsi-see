@@ -3,16 +3,20 @@
     <tr>
       <th>Country</th>
       <th>Patients</th>
+      <th>Avg. Days To Fund</th>
       <th>Watsi Funding</th>
-      <th>Healthcare Spending 2012</th>
+      <th>2012 Healthcare budget as % of GDP</th>
     </tr>
   </thead>
   <tbody>
     {{#each countries}}
-    <tr id={{this.[0]}}>
-      <td>{{this.[0]}}</td>
-      <td>{{this.[1].length}}</td>
-    </tr>
+      <tr>
+        <td>{{this.name}}</td>
+        <td>{{this.totalPatients}}</td>
+        <td>{{this.avgDaysToFund}}</td>
+        <td>{{this.totalDonations}}</td>
+        <td>{{this.spending}}</td>
+      </tr>
     {{/each}}
   </tbody>
 </table>
