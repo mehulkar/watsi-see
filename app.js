@@ -16,6 +16,10 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
+  res.render('index')
+});
+
+app.get('/countries', function(req, res) {
   watsi.readDoc(function(err, data) {
 
     // collect by country
@@ -27,19 +31,23 @@ app.get('/', function(req, res) {
       countries[row.country].push(row)
     });
 
-    // convert to array so we can sort
+    // convert to array for sorting
     var sortedCountries = [];
 
-    for (var key in countries) {
-      sortedCountries.push([key, countries[key]])
+    for (var country in countries) {
+      var length = countries[country].length;
+      var name = country;
+      var object = countries[country];
+
+      sortedCountries.push([name, length, object])
     }
 
     // sort by num of patients in each country
     sortedCountries.sort(function(a,b) {
-      return b[1].length - a[1].length;
+      return b[1] - a[1];
     });
 
-    res.render('index', {countries: sortedCountries})
+    res.send({countries: sortedCountries})
   });
 });
 

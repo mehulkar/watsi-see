@@ -16,6 +16,73 @@
       });
     }
   </script>
+
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+      $.get('/countries', function(data) {
+        data.countries.forEach(function(country) {
+          var sumOfCosts = country[2].reduce(function(total, item) {
+            var intCost = parseFloat(item.cost.slice(1))
+            return total + intCost;
+          }, 0)
+
+          country[3] = sumOfCosts;
+
+          var tr = document.createElement('tr');
+          tr.id = country[0];
+
+          var nameCell        = createTD(country[0]);
+          var patientsCell    = createTD(country[1]);
+          var expenditureCell = createTD(toUSD(country[3]));
+
+          tr.appendChild(nameCell);
+          tr.appendChild(patientsCell);
+          tr.appendChild(expenditureCell);
+
+          $('tbody')[0].appendChild(tr);
+
+          function createTD(html) {
+            var td = document.createElement('td')
+            td.innerHTML = html;
+            return td;
+          }
+        });
+
+        getHealthcareSpending();
+
+      });
+    });
+
+    function getHealthcareSpending() {
+      var countries = {}
+      d3.csv('/spending.csv', function(data) {
+        data.forEach(function(item) {
+          var country = item["Country Name"];
+          countries[country] = parseFloat(item["2012 [YR2012]"]);
+        });
+
+        $('tbody tr').each(function(i, row) {
+          var country = row.id;
+          if (typeof countries[country] !== 'undefined' ) {
+            var cell2012 = document.createElement('td');
+            cell2012.innerHTML = countries[country].toFixed(2) + "%";
+            row.appendChild(cell2012);
+          }
+        });
+      });
+    }
+
+    function toUSD(number) {
+      var number = number.toString(),
+      dollars = number.split('.')[0],
+
+      dollars = dollars.split('').reverse().join('')
+          .replace(/(\d{3}(?!$))/g, '$1,')
+          .split('').reverse().join('');
+      return '$' + dollars;
+    }
+  </script>
 </head>
 <body>
   <h1>Watsi See</h1>
