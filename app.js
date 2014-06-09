@@ -16,15 +16,6 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
-  async.parallel([watsi.readDoc, watsi.readTimeStamp], function(err, results){
-    var items = results[0],
-        timestamp = results[1],
-        data = { items: items, timestamp: timestamp }
-    res.render('index', data)
-  });
-});
-
-app.get('/countries', function(req, res) {
   watsi.readDoc(function(err, data) {
 
     // collect by country
@@ -48,7 +39,7 @@ app.get('/countries', function(req, res) {
       return b[1].length - a[1].length;
     });
 
-    res.render('countries', {countries: sortedCountries})
+    res.render('index', {countries: sortedCountries})
   });
 });
 

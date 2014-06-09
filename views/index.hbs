@@ -1,22 +1,16 @@
 <table border='1' cellspacing="0" cellpadding="5">
   <thead>
     <tr>
-      <th>Posted</th>
-      <th>Funded</th>
-      <th>Cost</th>
-      <th>Days</th>
       <th>Country</th>
+      <th>Num of Patients</th>
     </tr>
   </thead>
   <tbody>
-    {{#each items}}
-      <tr id="patient-{{this.id}}">
-        <td class='posted'>{{this.posted}}</td>
-        <td class='funded'>{{this.funded}}</td>
-        <td class='cost'>{{this.cost}}</td>
-        <td class='days'>{{this.daysToFund}}</td>
-        <td class='country'>{{this.country}}</td>
-      </tr>
+    {{#each countries}}
+    <tr>
+      <td>{{this.[0]}}</td>
+      <td>{{this.[1].length}}</td>
+    </tr>
     {{/each}}
   </tbody>
 </table>
