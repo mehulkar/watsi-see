@@ -37,9 +37,9 @@ app.get('/', function(req, res) {
       // average days to fund
       countries[country].avgDaysToFund = getAvgDaysToFund(data[country], country);
       // average donation
-      countries[country].avgDonation = getAvgDonation(data[country]);
+      countries[country].avgCost = toUSD(getAvgCost(data[country]));
       // totalDonation
-      countries[country].totalDonations = getTotalDonations(data[country]);
+      countries[country].totalCost = toUSD(getTotalCost(data[country]));
       // totalPatients
       countries[country].totalPatients = data[country].length;
     }
@@ -68,14 +68,15 @@ app.get('/', function(req, res) {
       for (var country in countries) {
         var item = {
           name: country,
-          avgDonation: countries[country].avgDonation,
+          avgCost: countries[country].avgCost,
           avgDaysToFund: countries[country].avgDaysToFund,
-          totalDonations: countries[country].totalDonations,
+          totalCost: countries[country].totalCost,
           totalPatients: countries[country].totalPatients,
           spending: countries[country].spending
         }
         records.push(item);
       }
+
       res.render('index', {countries: records});
     });
   });
@@ -124,7 +125,6 @@ module.exports = app;
 // HELPER FUNCTIONS
 // for each country, assign the average daysToFund, totalDonations, and totalPatients
 function getAvgDaysToFund(records, country) {
-  // if (country === 'Guatemala') { console.log(records); }
   var total = records.reduce(function(running, item) {
     var num = parseFloat(item.daysToFund) || 0;
     return running += num;
@@ -136,20 +136,16 @@ function getAvgDaysToFund(records, country) {
   }
 }
 
-function getAvgDonation(records) {
-  if (records.length > 0 ) {
-    return toUSD(getTotalDonations(records) / records.length);
-  } else {
-    return 0;
-  }
+function getAvgCost(records) {
+  return getTotalCost(records) / records.length;
 }
 
-function getTotalDonations(records) {
+function getTotalCost(records) {
   var sum = 0;
   records.forEach(function(item) {
     sum += parseFloat(item.cost.slice(1).replace(/,/g,''));
   });
-  return toUSD(sum);
+  return sum;
 }
 
 function toUSD(number) {
