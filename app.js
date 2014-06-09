@@ -24,11 +24,33 @@ app.get('/', function(req, res) {
   });
 });
 
-app.get('/data', function(req, res) {
+app.get('/countries', function(req, res) {
   watsi.readDoc(function(err, data) {
-    res.send(data)
+
+    // collect by country
+    var countries = {};
+    data.forEach(function(row) {
+      if (typeof countries[row.country] === 'undefined') {
+        countries[row.country] = [];
+      }
+      countries[row.country].push(row)
+    });
+
+    // convert to array so we can sort
+    var sortedCountries = [];
+
+    for (var key in countries) {
+      sortedCountries.push([key, countries[key]])
+    }
+
+    // sort by num of patients in each country
+    sortedCountries.sort(function(a,b) {
+      return b[1].length - a[1].length;
+    });
+
+    res.render('countries', {countries: sortedCountries})
   });
-})
+});
 
 app.post('/refresh', function(req, res) {
   watsi.refreshData(function() {

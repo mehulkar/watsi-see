@@ -11,3 +11,11 @@ p.small {
   font-size: 10px;
   color: #ccc;
 }
+
+nav {
+  margin-bottom: 20px;
+}
+
+nav li {
+  display: inline-block;
+}

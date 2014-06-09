@@ -11,21 +11,22 @@
     function refreshData() {
       console.log('refreshing...')
       $.post('/refresh', function() {
-        console.log('done!')
+        console.log('done!');
+        window.location.reload();
       });
     }
-  </script>
-
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $.get('/data', function(data) {
-        window.myObjects = data;
-      })
-    })
   </script>
 </head>
 <body>
   <h1>Watsi See</h1>
+  <section>
+    <button onClick="refreshData()">Refresh Data</button>
+    <p class='small'>Last Updated: {{timestamp}}</p>
+  </section>
+  <nav>
+    <li><a href="/">Home</a></li>
+    <li><a href="/countries">Countries</a></li>
+  </nav>
   {{{body}}}
 </body>
 </html>
