@@ -20,34 +20,8 @@ app.get('/', function(req, res) {
 });
 
 app.get('/countries', function(req, res) {
-  watsi.readDoc(function(err, data) {
-
-    // collect by country
-    var countries = {};
-    data.forEach(function(row) {
-      if (typeof countries[row.country] === 'undefined') {
-        countries[row.country] = [];
-      }
-      countries[row.country].push(row)
-    });
-
-    // convert to array for sorting
-    var sortedCountries = [];
-
-    for (var country in countries) {
-      var length = countries[country].length;
-      var name = country;
-      var object = countries[country];
-
-      sortedCountries.push([name, length, object])
-    }
-
-    // sort by num of patients in each country
-    sortedCountries.sort(function(a,b) {
-      return b[1] - a[1];
-    });
-
-    res.send({countries: sortedCountries})
+  watsi.sortedCountries(function(err, data) {
+    res.send({countries: data})
   });
 });
 
