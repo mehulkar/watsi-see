@@ -19,3 +19,6 @@ nav {
 nav li {
   display: inline-block;
 }
+
+section { margin-bottom: 10px; }
+.control button { display: inline-block; }

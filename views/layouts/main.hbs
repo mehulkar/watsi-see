@@ -15,14 +15,100 @@
         window.location.reload();
       });
     }
+
+    $(document).ready(function() {
+      makeScatterPlot();
+    })
+
+    // store the maximums so we can use them for height/width
+    function getFloatFromTD(td, axis) {
+      return parseFloat(td.innerHTML);
+    }
+
+    function makeScatterPlot() {
+      // data that you want to plot, I've used separate arrays for x and y values
+        var xdata = [];
+        var ydata = [];
+        $('tbody tr').each(function(i, el) {
+          var tds = $(el).children('td');
+          // get data from table
+          xdata.push(getFloatFromTD(tds[1]));
+          ydata.push(getFloatFromTD(tds[2]));
+        });
+
+      // size and margins for the chart
+      var margin = {top: 20, right: 0, bottom: 60, left: 30}
+        , width = 960 - margin.left - margin.right
+        , height = 500 - margin.top - margin.bottom;
+
+      console.log('width: ' + width + 'px')
+      console.log('height: '+ height + 'px')
+
+      // x and y scales, I've used linear here but there are other options
+      // the scales translate data values to pixel values for you
+      var x = d3.scale.linear()
+                .domain([0, d3.max(xdata)])  // the range of the values to plot
+                .range([ 0, width ]);        // the pixel range of the x-axis
+
+      var y = d3.scale.linear()
+                .domain([0, d3.max(ydata)])
+                .range([ height, 0 ]);
+
+
+      // the chart object, includes all margins
+      var chart = d3.select('#graph')
+      .append('svg:svg')
+      .attr('width', width + margin.right + margin.left)
+      .attr('height', height + margin.top + margin.bottom)
+      .attr('class', 'chart')
+
+      // the main object where the chart and axis will be drawn
+      var main = chart.append('g')
+      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+      .attr('width', width)
+      .attr('height', height)
+      .attr('class', 'main')
+
+      // draw the x axis
+      var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient('bottom');
+
+      main.append('g')
+      .attr('transform', 'translate(0,' + height + ')')
+      .attr('class', 'main axis date')
+      .call(xAxis);
+
+      // draw the y axis
+      var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient('left');
+
+      main.append('g')
+      .attr('transform', 'translate(0,0)')
+      .attr('class', 'main axis date')
+      .call(yAxis);
+
+      // draw the graph object
+      var g = main.append("svg:g");
+
+      g.selectAll("scatter-dots")
+        .data(ydata)  // using the values in the ydata array
+        .enter().append("svg:circle")  // create a new circle for each value
+            .attr("cy", function (d) { return y(d); } ) // translate y value to a pixel
+            .attr("cx", function (d,i) { return x(xdata[i]); } ) // translate x value
+            .attr("r", 5) // radius of circle
+            .style("fill", '#aaa'); // opacity of circle
+    }
   </script>
 </head>
 <body>
   <h1>Watsi See</h1>
-  <section>
+  <p class='small'>Last Updated: {{timestamp}}</p>
+  <section class='control'>
     <button onClick="refreshData()">Refresh Data</button>
-    <p class='small'>Last Updated: {{timestamp}}</p>
   </section>
+
   {{{body}}}
 </body>
 </html>
